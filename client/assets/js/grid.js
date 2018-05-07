@@ -8,7 +8,7 @@ function init(){
 	var numSurveyBots = 20;
 	var numHarvestBots = 10;
 	var stepsToCount = 10;
-	var robotRange = 10;
+	var robotRange = 6;
 
 	//arrays of robots
 	var surveyBotArr = [];
@@ -52,7 +52,7 @@ function init(){
 		    moveRobots(harvestBotArr, numHarvestBots);
 
 		    surveyBotVoting(surveyBotArr, numSurveyBots);
-
+		    resetRobots(surveyBotArr);
 
 		    //generic wait (3 secs)
 		    await sleep(3000);
@@ -63,7 +63,13 @@ function init(){
 
 	function sleep(ms) {
   		return new Promise(resolve => setTimeout(resolve, ms));
-	}   
+	}
+
+	function resetRobots(robotArr, numRobots) {
+		for (var i = 0; i < robotArr.length; i++){
+			robotArr[i].localGroup = [];
+        }
+	}
 
 	function initialiseGrid() { //fill the grid randomly
 	    for (var j = 0; j < gridHeight; j++) { //iterate through rows
@@ -221,6 +227,8 @@ function init(){
 				console.log("not in local group");
 			}
 		}
+
+		console.log("local group is ", bot.localGroup);
 	}
 
 	function findEuclideanDistance(x1, y1, x2, y2) {
