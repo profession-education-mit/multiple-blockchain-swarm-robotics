@@ -55,7 +55,7 @@ function init(){
 		    resetRobots(surveyBotArr);
 
 		    //generic wait (3 secs)
-		    await sleep(3000);
+		    await sleep(1000);
 		    //every timestep, clears the canvas
 		    ctx.clearRect(0, 0, 0.5 + gridHeight*blockSize, 0.5 + gridWidth*blockSize);
 		}
@@ -83,7 +83,8 @@ function init(){
 	}
 
 	function initialiseRobots(robotArr, numRobots){
-		for (var i = 0; i < numRobots; i++) { //iterate through rows
+		var i = 0;
+		while (i < numRobots) { //iterate through rows
 			var j = Math.round(Math.random()*(gridHeight -1));
 			var k = Math.round(Math.random()*(gridHeight -1));
 			if(theGrid[k + j*gridWidth].hasRobot == false){
@@ -95,11 +96,12 @@ function init(){
 					opinion: 0,
 					redSquares:0,
 					totalSquares:0,
-					localGroup: []
+					localGroup: [],
+					localGroupOpinions: []
 				});
 				theGrid[k + j*gridWidth].hasRobot = true;
+				i++;
 			}
-			else i--;	
 		}
 	}
 
@@ -213,19 +215,16 @@ function init(){
 			j = robotArr[i].j;
 			k = robotArr[i].k;
 
-			var euclideanDistance = findEuclideanDistance(botj, botk, j, k, euclideanDistance);
-			console.log("euclidean distance is", euclideanDistance);
+			var euclideanDistance = findEuclideanDistance(botj, botk, j, k);
 
 			if(euclideanDistance == 0){
-				console.log("same robot");
+				//same robot, do nothing
 			}
 			else if(euclideanDistance <= robotRange){
-				console.log("in Local Group, id is ", robotArr[i].id);
+				//in local group
 				bot.localGroup.push(i);
 			}
-			else{
-				console.log("not in local group");
-			}
+			//otherwise, not in local group
 		}
 
 		console.log("local group is ", bot.localGroup);
