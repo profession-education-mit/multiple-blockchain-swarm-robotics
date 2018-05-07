@@ -47,6 +47,9 @@ function init(){
 		    //move the harvest bots
 		    moveRobots(harvestBotArr, numHarvestBots);
 
+		    surveyBotVoting(surveyBotArr, numSurveyBots);
+
+
 		    //generic wait (3 secs)
 		    await sleep(3000);
 		    //every timestep, clears the canvas
@@ -170,21 +173,44 @@ function init(){
 		}
 	}
 
-	function formOpinion() {
-		
+
+	function surveyBotVoting(robotArr, numRobots) {
+		for (var i = 0; i < numRobots; i++) { 
+			formSurveyOpinion(robotArr[i])
+			broadCast(robotArr[i])
+			}
 	}
 
+	function formSurveyOpinion(bot) {
+		if(bot.byzantine == false){
+			if (bot.totalSquares/2 > bot.redSquares) bot.opinion = 'white'
+			else  bot.opinion = 'red';
+		}
+		else bot.opinion = 'red';
+	}
+
+	function formHarvestOpinion() {
+
+	}
 
 	function findLocalGroup() {
 
 	}
 
-	function broadCast() {
+	function pollLocalGroup() {
 
+	}
+
+	function broadCast(bot) {
+		console.log("my opinion is ", bot.opinion)
 	}
 
 	function vote() {
 
+	}
+
+	function pollLocalSurveyBots() {
+		// each harvest bot polls all the survey bots in the local group for the state of the chain
 	}
 
 }
