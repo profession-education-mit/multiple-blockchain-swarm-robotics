@@ -1,5 +1,5 @@
 // internal
-import {BOARD_DIMENSION, EMPTY, PERCENT_BYZANTINE} from '../utils/constants';
+import {BOARD_DIMENSION, EMPTY} from '../utils/constants';
 
 
 export default (sequelize, DataTypes) => {
@@ -7,11 +7,6 @@ export default (sequelize, DataTypes) => {
 	    /*
 	        Model representing a swarm.
 	     */
-        percentByzantine: {
-	        type: DataTypes.INTEGER,
-            defaultValue: PERCENT_BYZANTINE,
-            allowNull: false,
-        },
 	    startTime: {
 	        type: DataTypes.DATE,
             allowNull: false,
@@ -26,6 +21,7 @@ export default (sequelize, DataTypes) => {
         board: { // TODO: Bruno: come up with a better board abstraction
 	        // 0 if no robot is located there, otherwise
 	        type: DataTypes.ARRAY(DataTypes.INTEGER),
+            //add in colour property here? not sure how. maybe set in the interface?
             defaultValue: new Array(BOARD_DIMENSION*BOARD_DIMENSION).fill(EMPTY),
         },
 

@@ -90,7 +90,6 @@ function init(){
 			var j = Math.round(Math.random()*(gridHeight -1));
 			var k = Math.round(Math.random()*(gridHeight -1));
 			var byz = (i < numByzantine);
-			console.log("byz is ", byz);
 			if(theGrid[k + j*gridWidth].hasRobot == false){
 				robotArr.push({
 					j: j,
@@ -197,6 +196,7 @@ function init(){
 		for (var i = 0; i < numRobots; i++) { 
 			formSurveyOpinion(robotArr[i]);
 			findLocalGroup(robotArr[i], numRobots, robotArr);
+			vote(robotArr[i]);
 			}
 	}
 
