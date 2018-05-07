@@ -1,0 +1,11 @@
+{
+    "experiment": {
+        "username": "postgres",
+        "password": "1234",
+        "database": "experiment",
+        "host": "localhost:5432",
+        "dialect": "postgres",
+        "logging": false,
+        "underscored": true
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "presets": [
+        ["env", {
+            "targets": {
+                "node": true
+            }
+        }],
+        "stage-0"
+    ],
+    "plugins": [
+        "emotion",
+        "transform-es2015-destructuring",
+        "transform-object-rest-spread"
+    ]
+}
