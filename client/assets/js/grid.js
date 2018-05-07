@@ -8,9 +8,13 @@ function init(){
 	var numSurveyBots = 20;
 	var numHarvestBots = 10;
 	var stepsToCount = 10;
+	var robotRange = 10;
 
+	//arrays of robots
 	var surveyBotArr = [];
 	var harvestBotArr = [];
+
+	//symbols
 	var surveySymbol = 'x';
 	var harvestSymbol = 'o';	
 
@@ -80,10 +84,12 @@ function init(){
 				robotArr.push({
 					j: j,
 					k: k,
+					id: i,
 					byzantine: false,
 					opinion: 0,
 					redSquares:0,
-					totalSquares:0
+					totalSquares:0,
+					localGroup: []
 				});
 				theGrid[k + j*gridWidth].hasRobot = true;
 			}
@@ -176,8 +182,8 @@ function init(){
 
 	function surveyBotVoting(robotArr, numRobots) {
 		for (var i = 0; i < numRobots; i++) { 
-			formSurveyOpinion(robotArr[i])
-			broadCast(robotArr[i])
+			formSurveyOpinion(robotArr[i]);
+			findLocalGroup(robotArr[i], numRobots, robotArr);
 			}
 	}
 
@@ -193,8 +199,32 @@ function init(){
 
 	}
 
-	function findLocalGroup() {
+	function findLocalGroup(bot, numRobots, robotArr) {
+		//find euclidean distance to other robots
+		for (var i=0; i<numRobots; i++){
+			botj = bot.j;
+			botk = bot.k;
+			j = robotArr[i].j;
+			k = robotArr[i].k;
 
+			var euclideanDistance = findEuclideanDistance(botj, botk, j, k, euclideanDistance);
+			console.log("euclidean distance is", euclideanDistance);
+
+			if(euclideanDistance == 0){
+				console.log("same robot");
+			}
+			else if(euclideanDistance <= robotRange){
+				console.log("in Local Group, id is ", robotArr[i].id);
+				bot.localGroup.push(i);
+			}
+			else{
+				console.log("not in local group");
+			}
+		}
+	}
+
+	function findEuclideanDistance(x1, y1, x2, y2) {
+		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 	}
 
 	function pollLocalGroup() {
