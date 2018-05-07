@@ -1,5 +1,4 @@
 //draws the grid for the robots
-
 function init(){
     //constants
 	var gridHeight = 16;
@@ -8,6 +7,7 @@ function init(){
 	var blockSize = 50;
 	var numSurveyBots = 20;
 	var numHarvestBots = 10;
+	var stepsToCount = 10;
 
 	var surveyBotArr = [];
 	var harvestBotArr = [];
@@ -26,13 +26,22 @@ function init(){
 	//functions
 	async function main() { //main loop
 		while(true){
-
 		    drawGrid();
 		   	drawRobots(surveyBotArr, surveySymbol);
 		   	drawRobots(harvestBotArr, harvestSymbol);
-		    moveRobots(surveyBotArr, numSurveyBots);
-		    moveRobots(harvestBotArr, numHarvestBots);
 
+		   	//survey bots move more than harvest bots
+		   	for(var i=0; i<stepsToCount; i++){
+		    	await sleep(1000);
+		    	//every timestep, clears the canvas
+		    	ctx.clearRect(0, 0, 0.5 + gridHeight*blockSize, 0.5 + gridWidth*blockSize);
+		    	moveRobots(surveyBotArr, numSurveyBots);
+		    	drawGrid();
+		   		drawRobots(surveyBotArr, surveySymbol);
+		   		drawRobots(harvestBotArr, harvestSymbol);
+		    }
+
+		    moveRobots(harvestBotArr, numHarvestBots);
 		    //generic wait (3 secs)
 		    await sleep(3000);
 
@@ -64,7 +73,10 @@ function init(){
 				robotArr.push({
 					j: j,
 					k: k,
-					byzantine: false
+					byzantine: false,
+					opinion: 0,
+					redSquares:0,
+					totalSquares:0
 				});
 				theGrid[k + j*gridWidth].hasRobot = true;
 			}
@@ -96,7 +108,25 @@ function init(){
         	}
 	    }
 
-	function moveRobots(robotArr, numRobots){
+	function moveRobots(robotArr, numRobots, theGrid){
+		//move a number of steps (stepNum) and then vote 
+		countCurrentSquare(robotArr, numRobots);
+		chooseNext(robotArr, numRobots);
+	}
+
+	function countCurrentSquare(robotArr, numRobots){
+		for(var i=0; i<numRobots; i++){
+			var j = robotArr[i].j;
+			var k = robotArr[i].k;
+			if(theGrid[k + j*gridWidth].red == true){
+				robotArr[i].redSquares++;
+			}
+			//increment total square count
+			robotArr[i].totalSquares++;
+		}	
+	}
+
+	function chooseNext(robotArr, numRobots){
 		var i = 0;
 		while (i < numRobots) { //iterate through rows
 			var j = robotArr[i].j;
@@ -138,7 +168,16 @@ function init(){
 				i++;
 			}
 		}
-	} 
+	}
+
+
+	function findLocalGroup() {
+
+	}
+
+	function broadCast() {
+
+	}
 
 }
 window.onload = init;
