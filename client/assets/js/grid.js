@@ -6,6 +6,8 @@ function init(){
 	var theGrid = [];
 	var blockSize = 50;
 	var numSurveyBots = 20;
+	var numSurveyByzantine = 2;
+	var numHarvestByzantine = 1;
 	var numHarvestBots = 10;
 	var stepsToCount = 10;
 	var robotRange = 6;
@@ -23,8 +25,8 @@ function init(){
 	var ctx = c.getContext("2d");
 	initialiseGrid(); //create the starting state for the grid by filling it with random cells
 	drawGrid();
-	initialiseRobots(surveyBotArr, numSurveyBots);
-	initialiseRobots(harvestBotArr, numHarvestBots);	
+	initialiseRobots(surveyBotArr, numSurveyBots, numSurveyByzantine);
+	initialiseRobots(harvestBotArr, numHarvestBots, numHarvestByzantine);	
 	main();
 	
 	//functions
@@ -82,17 +84,19 @@ function init(){
 	    }
 	}
 
-	function initialiseRobots(robotArr, numRobots){
+	function initialiseRobots(robotArr, numRobots, numByzantine){
 		var i = 0;
 		while (i < numRobots) { //iterate through rows
 			var j = Math.round(Math.random()*(gridHeight -1));
 			var k = Math.round(Math.random()*(gridHeight -1));
+			var byz = (i < numByzantine);
+			console.log("byz is ", byz);
 			if(theGrid[k + j*gridWidth].hasRobot == false){
 				robotArr.push({
 					j: j,
 					k: k,
 					id: i,
-					byzantine: false,
+					byzantine: byz,
 					opinion: 0,
 					redSquares:0,
 					totalSquares:0,
@@ -124,7 +128,8 @@ function init(){
 		// place a robot on a random square
 		for (var i = 0; i < robotArr.length; i++){
 	        ctx.font = "bold 40px Arial";
-	        ctx.fillStyle = "black";
+	        if(robotArr[i].byzantine == true) ctx.fillStyle = "blue";
+			else ctx.fillStyle = "black";
             ctx.fillText(symbol, (robotArr[i].j)*blockSize + 15, (robotArr[i].k)*blockSize + 38);
         	}
 	    }
