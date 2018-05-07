@@ -35,16 +35,20 @@ function init(){
 		    	await sleep(1000);
 		    	//every timestep, clears the canvas
 		    	ctx.clearRect(0, 0, 0.5 + gridHeight*blockSize, 0.5 + gridWidth*blockSize);
+
+		    	//movement, drawing cycle
 		    	moveRobots(surveyBotArr, numSurveyBots);
+		    	countCurrentSquare(surveyBotArr, numSurveyBots);
 		    	drawGrid();
 		   		drawRobots(surveyBotArr, surveySymbol);
 		   		drawRobots(harvestBotArr, harvestSymbol);
 		    }
 
+		    //move the harvest bots
 		    moveRobots(harvestBotArr, numHarvestBots);
+
 		    //generic wait (3 secs)
 		    await sleep(3000);
-
 		    //every timestep, clears the canvas
 		    ctx.clearRect(0, 0, 0.5 + gridHeight*blockSize, 0.5 + gridWidth*blockSize);
 		}
@@ -108,16 +112,12 @@ function init(){
         	}
 	    }
 
-	function moveRobots(robotArr, numRobots, theGrid){
-		//move a number of steps (stepNum) and then vote 
-		countCurrentSquare(robotArr, numRobots);
-		chooseNext(robotArr, numRobots);
-	}
 
 	function countCurrentSquare(robotArr, numRobots){
 		for(var i=0; i<numRobots; i++){
 			var j = robotArr[i].j;
 			var k = robotArr[i].k;
+			//add to red square vote if been on red square
 			if(theGrid[k + j*gridWidth].red == true){
 				robotArr[i].redSquares++;
 			}
@@ -126,7 +126,7 @@ function init(){
 		}	
 	}
 
-	function chooseNext(robotArr, numRobots){
+	function moveRobots(robotArr, numRobots){
 		var i = 0;
 		while (i < numRobots) { //iterate through rows
 			var j = robotArr[i].j;
@@ -170,12 +170,20 @@ function init(){
 		}
 	}
 
+	function formOpinion() {
+		
+	}
+
 
 	function findLocalGroup() {
 
 	}
 
 	function broadCast() {
+
+	}
+
+	function vote() {
 
 	}
 
