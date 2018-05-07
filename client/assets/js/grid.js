@@ -17,50 +17,41 @@ function init(){
 	//handles the canvas
 	var c = document.getElementById("canvas");
 	var ctx = c.getContext("2d");
-	fillRandom(); //create the starting state for the grid by filling it with random cells
+	initialiseGrid(); //create the starting state for the grid by filling it with random cells
 	drawGrid();
 	initialiseRobots(surveyBotArr, numSurveyBots);
 	initialiseRobots(harvestBotArr, numHarvestBots);	
-	tick(); //call main loop
-
+	main();
+	
 	//functions
-	function tick() { //main loop
-	    var tickTime = 3000; // pause between iterations
-	    drawGrid();
-	   	drawRobots(surveyBotArr, surveySymbol);
-	   	drawRobots(harvestBotArr, harvestSymbol);
-	    moveRobots(surveyBotArr, numSurveyBots);
-	    moveRobots(harvestBotArr, numHarvestBots);
+	async function main() { //main loop
+		while(true){
 
-	    //every timestep, clears the canvas
-	    setTimeout(function() {clearGrid(tick)}, tickTime);
+		    drawGrid();
+		   	drawRobots(surveyBotArr, surveySymbol);
+		   	drawRobots(harvestBotArr, harvestSymbol);
+		    moveRobots(surveyBotArr, numSurveyBots);
+		    moveRobots(harvestBotArr, numHarvestBots);
+
+		    //generic wait (3 secs)
+		    await sleep(3000);
+
+		    //every timestep, clears the canvas
+		    ctx.clearRect(0, 0, 0.5 + gridHeight*blockSize, 0.5 + gridWidth*blockSize);
+		}
 	}
 
-	function clearGrid() {
-		ctx.clearRect(0, 0, 0.5 + gridHeight*blockSize, 0.5 + gridWidth*blockSize);
-		tick();
-	}
+	function sleep(ms) {
+  		return new Promise(resolve => setTimeout(resolve, ms));
+	}   
 
-	function fillRandom() { //fill the grid randomly
+	function initialiseGrid() { //fill the grid randomly
 	    for (var j = 0; j < gridHeight; j++) { //iterate through rows
 	        for (var k = 0; k < gridWidth; k++) { //iterate through columns
 	            theGrid.push({
 	            	red: Math.round(Math.random()),
 	            	hasRobot: false,
 	            });
-	        }
-	    }
-	}
-
-	function drawGrid() { //draw the contents of the grid onto a canvas
-    ctx.fillStyle = "red";
-	    ctx.clearRect(0, 0, gridHeight*blockSize, gridWidth*blockSize); //this should clear the canvas ahead of each redraw
-	    for (var j = 0; j < gridHeight; j++) { //iterate through rows
-	        for (var k = 0; k < gridWidth; k++) { //iterate through columns
-	            if (theGrid[k + j*gridWidth].red == 1) {
-	                ctx.fillRect(0.5 + j*blockSize, 0.5 + k*blockSize, blockSize, blockSize);
-	                ctx.fill();  
-	            }
 	        }
 	    }
 	}
@@ -80,6 +71,30 @@ function init(){
 			else i--;	
 		}
 	}
+
+
+	function drawGrid() { //draw the contents of the grid onto a canvas
+    ctx.fillStyle = "red";
+	    ctx.clearRect(0, 0, gridHeight*blockSize, gridWidth*blockSize); //this should clear the canvas ahead of each redraw
+	    for (var j = 0; j < gridHeight; j++) { //iterate through rows
+	        for (var k = 0; k < gridWidth; k++) { //iterate through columns
+	            if (theGrid[k + j*gridWidth].red == 1) {
+	                ctx.fillRect(0.5 + j*blockSize, 0.5 + k*blockSize, blockSize, blockSize);
+	                ctx.fill();  
+	            }
+	        }
+	    }
+	}
+
+	function drawRobots(robotArr, symbol){
+		// for i = 0:numrobots
+		// place a robot on a random square
+		for (var i = 0; i < robotArr.length; i++){
+	        ctx.font = "bold 40px Arial";
+	        ctx.fillStyle = "black";
+            ctx.fillText(symbol, (robotArr[i].j)*blockSize + 15, (robotArr[i].k)*blockSize + 38);
+        	}
+	    }
 
 	function moveRobots(robotArr, numRobots){
 		var i = 0;
@@ -123,18 +138,7 @@ function init(){
 				i++;
 			}
 		}
-	}
-
-
-	function drawRobots(robotArr, symbol){
-		// for i = 0:numrobots
-		// place a robot on a random square
-		for (var i = 0; i < robotArr.length; i++){
-	        ctx.font = "bold 40px Arial";
-	        ctx.fillStyle = "black";
-            ctx.fillText(symbol, (robotArr[i].j)*blockSize + 15, (robotArr[i].k)*blockSize + 38);
-        	}
-	    }
+	} 
 
 }
 window.onload = init;
