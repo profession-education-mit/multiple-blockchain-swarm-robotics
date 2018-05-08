@@ -11,6 +11,7 @@ function init(){
 	var numHarvestBots = 10;
 	var stepsToCount = 10;
 	var robotRange = 6;
+	var numLocalOpinions = 5;
 
 	//arrays of robots
 	var surveyBotArr = [];
@@ -196,8 +197,13 @@ function init(){
 		for (var i = 0; i < numRobots; i++) { 
 			formSurveyOpinion(robotArr[i]);
 			findLocalGroup(robotArr[i], numRobots, robotArr);
-			vote(robotArr[i]);
 			}
+
+		//separate loops as need to all form groups and opinions first
+		for (var i = 0; i < numRobots; i++) { 
+			getLocalOpinion(robotArr[i], numRobots, robotArr);
+			vote(robotArr[i]);
+		}	
 	}
 
 	function formSurveyOpinion(bot) {
@@ -239,8 +245,25 @@ function init(){
 		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 	}
 
-	function pollLocalGroup() {
+	function getLocalOpinion(bot, numRobots, robotArr) {
 
+
+		groupSize = bot.localGroup.length;
+
+		if (groupSize == 0 || bot.byzantine == true){
+			for (var i=0; i<numLocalOpinions; i++){
+				bot.localGroupOpinions[i] = bot.opinion;
+			}
+		}
+
+		else {
+			for (var i=0; i<numLocalOpinions; i++){
+				randOpinion = Math.floor(Math.random()*bot.localGroup.length);
+				chosenRobot = bot.localGroup[randOpinion];
+				bot.localGroupOpinions[i] = robotArr[chosenRobot].opinion;
+				console.log("opinion is ", randOpinion, "  ", bot.localGroupOpinions[i]);
+			}
+		}
 	}
 
 	function broadCast(bot) {
@@ -248,7 +271,7 @@ function init(){
 	}
 
 	function vote() {
-
+		//submit vector of local opinions as votes
 	}
 
 	function pollLocalSurveyBots() {
