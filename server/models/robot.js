@@ -6,11 +6,11 @@ export default (sequelize, DataTypes) => {
 	        Model representing a robot in a swarm.
 	     */
 	    jValue: {
-	    	type: DataTypes.INT,
+	    	type: DataTypes.INTEGER,
 	    	allowNull: false,
 	    },
 	    kValue: {
-	    	type: DataTypes.INT,
+	    	type: DataTypes.INTEGER,
 	    	allowNull: false,
 	    },	    
         byzantine: {
@@ -21,21 +21,21 @@ export default (sequelize, DataTypes) => {
             allowNull: false,
         },
         opinion: {
-        	type: DataTypes.INT,
+        	type: DataTypes.INTEGER,
         },
         //universal: e.g. for the survey bots will be counting 
         //reds, the harvestbots count consensus
         countX: {
-        	type: DataTypes.INT,
+        	type: DataTypes.INTEGER,
         },
         countAll: {
-        	type: DataTypes.INT,
+        	type: DataTypes.INTEGER,
         },
         localGroup: {
         	type: DataTypes.ARRAY(DataTypes.STRING),
         },
         localGroupOpinions: {
-        	type: DataTypes.ARRAY(DataTypes.INT),
+        	type: DataTypes.ARRAY(DataTypes.INTEGER),
         },
         // TODO: Bruno: Add other necessary fields here
 	});

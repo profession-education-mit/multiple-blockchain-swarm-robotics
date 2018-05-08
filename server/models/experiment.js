@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
         board: { // TODO: Bruno: come up with a better board abstraction
 	        // 0 if no robot is located there, otherwise
 	        type: DataTypes.ARRAY(DataTypes.INTEGER),
-            //add in colour property here? not sure how. maybe set in the interface?
+            //add in colour property here? not sure how. maybe set in the
             defaultValue: new Array(BOARD_DIMENSION*BOARD_DIMENSION).fill(EMPTY),
         },
 
