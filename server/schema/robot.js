@@ -3,12 +3,25 @@ export default `
 		SURVEY
 		HARVEST
 	}
+
+    type Swarm {
+        chainid: ID!
+        chainDataLocation: String!
+        numByzantine: Int!
+        category: RobotCategoryEnum!
+    }
     
 	type Robot {
 		id: ID!
-		category: RobotCategoryEnum!
+        jValue: Int!
+        kValue: Int!
 		byzantine: Boolean!
 		nodeId: String!
+        opinion: Int
+        countX: Int
+        countAll: Int
+        localGroup: [ID]
+        localGroupOpinions: [Int]
 	}
 	
     input RobotCreateInput {
