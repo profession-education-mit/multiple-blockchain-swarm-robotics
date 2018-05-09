@@ -3,13 +3,6 @@ export default `
 		SURVEY
 		HARVEST
 	}
-
-    type Swarm {
-        chainid: ID!
-        chainDataLocation: String!
-        numByzantine: Int!
-        category: RobotCategoryEnum!
-    }
     
 	type Robot {
 		id: ID!
