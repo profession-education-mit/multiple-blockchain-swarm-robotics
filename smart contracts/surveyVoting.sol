@@ -19,7 +19,7 @@ contract Voting {
   deploy the contract to the blockchain. When we deploy the contract,
   we will pass an array of candidates who will be contesting in the election
   */
-  function Voting(bytes32[] candidateNames) public {
+  function Voting(bytes32[] opinionNames) public {
     opinionList = opinionNames;
   }
 
@@ -32,7 +32,7 @@ contract Voting {
   // This function increments the vote count for the specified candidate. This
   // is equivalent to casting a vote
   function voteForOpinion(bytes32 opinion) public {
-    require(validCandidate(opinion));
+    require(validOpinion(opinion));
     votesReceived[opinion] += 1;
   }
 

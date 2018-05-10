@@ -2,10 +2,10 @@
 function init(){
 	//contract setup
 	web3Chain1 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-	abi = JSON.parse('[{"constant":false,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"validCandidate","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"x","type":"bytes32"}],"name":"bytes32ToString","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidateList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"voteForOpinion","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"contractOwner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"inputs":[{"name":"opinionNames","type":"bytes32[]"}],"payable":false,"type":"constructor"}]')
-	VotingContract = web3.eth.contract(abi);
+	abi = JSON.parse('[{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"validOpinion","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"voteForOpinion","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"opinionList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"opinionNames","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]')
+	surveyVotingContract = web3Chain1.eth.contract(abi);
 	// In your nodejs console, execute contractInstance.address to get the address at which the contract is deployed and change the line below to use your deployed address
-	contractInstance = surveyVotingContract.at('0xba0a6678cfa999027d94b23650acbaa8fa272177');
+	contractInstance = surveyVotingContract.at('0xd135312282031ec6b2153e5c212805e266973162');
 	opinions = {"White": "white", "Red": "red"}
 
     //constants
@@ -216,10 +216,10 @@ function init(){
 
 	function formSurveyOpinion(bot) {
 		if(bot.byzantine == false){
-			if (bot.totalSquares/2 > bot.redSquares) bot.opinion = 'white'
-			else  bot.opinion = 'red';
+			if (bot.totalSquares/2 > bot.redSquares) bot.opinion = 'White'
+			else  bot.opinion = 'Red';
 		}
-		else bot.opinion = 'red';
+		else bot.opinion = 'Red';
 	}
 
 	function formHarvestOpinion() {
@@ -278,8 +278,11 @@ function init(){
 		console.log("my opinion is ", bot.opinion)
 	}
 
-	function vote() {
+	function vote(bot) {
 		//submit vector of local opinions as votes
+		contractInstance.voteForOpinion(bot.opinion, {from: web3Chain1.eth.accounts[0]});
+  		var val = web3Chain1.eth.blockNumber;
+  		console.log(val);
 	}
 
 	function pollLocalSurveyBots() {
