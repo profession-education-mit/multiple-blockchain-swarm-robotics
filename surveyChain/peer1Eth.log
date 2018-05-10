@@ -1,0 +1,38 @@
+INFO [05-10|12:10:26] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [05-10|12:10:26] Starting peer-to-peer node               instance=Geth/v1.8.7-stable/darwin-amd64/go1.10.2
+INFO [05-10|12:10:26] Allocated cache and file handles         database=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/surveyChain/peer1DataDir/geth/chaindata cache=768 handles=128
+WARN [05-10|12:10:26] Upgrading database to use lookup entries 
+INFO [05-10|12:10:26] Database deduplication successful        deduped=0
+INFO [05-10|12:10:26] Initialised chain configuration          config="{ChainID: 2004 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Byzantium: 0 Constantinople: <nil> Engine: unknown}"
+INFO [05-10|12:10:26] Disk storage enabled for ethash caches   dir=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/surveyChain/peer1DataDir/geth/ethash count=3
+INFO [05-10|12:10:26] Disk storage enabled for ethash DAGs     dir=/Users/agnes/.ethash                                                                                              count=2
+INFO [05-10|12:10:26] Initialising Ethereum protocol           versions="[63 62]" network=1144
+INFO [05-10|12:10:26] Loaded most recent local header          number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:10:26] Loaded most recent local full block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:10:26] Loaded most recent local fast block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:10:26] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [05-10|12:10:26] Starting P2P networking 
+INFO [05-10|12:10:28] UDP listener up                          self=enode://4084f9ad8672d10f789c21bae5fc06ecd68ff19a877807ebe6ef89618620665c3e883373777c9694e1783e530b0f92a0f7042285f1e8e30581bea06a29ea77ba@[::]:30303
+INFO [05-10|12:10:28] RLPx listener up                         self=enode://4084f9ad8672d10f789c21bae5fc06ecd68ff19a877807ebe6ef89618620665c3e883373777c9694e1783e530b0f92a0f7042285f1e8e30581bea06a29ea77ba@[::]:30303
+INFO [05-10|12:10:28] Blockchain manager stopped 
+INFO [05-10|12:10:28] Stopping Ethereum protocol 
+INFO [05-10|12:10:28] Ethereum protocol stopped 
+INFO [05-10|12:10:28] Transaction pool stopped 
+INFO [05-10|12:10:28] Database closed                          database=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/surveyChain/peer1DataDir/geth/chaindata
+Fatal: Error starting protocol stack: listen unix /Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/surveyChain/peer1DataDir/geth.ipc: bind: invalid argument
+INFO [05-10|12:11:13] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [05-10|12:11:13] Starting peer-to-peer node               instance=Geth/v1.8.7-stable/darwin-amd64/go1.10.2
+INFO [05-10|12:11:13] Allocated cache and file handles         database=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/surveyChain/peer1DataDir/geth/chaindata cache=768 handles=128
+INFO [05-10|12:11:13] Initialised chain configuration          config="{ChainID: 2004 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Byzantium: 0 Constantinople: <nil> Engine: unknown}"
+INFO [05-10|12:11:13] Disk storage enabled for ethash caches   dir=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/surveyChain/peer1DataDir/geth/ethash count=3
+INFO [05-10|12:11:13] Disk storage enabled for ethash DAGs     dir=/Users/agnes/.ethash                                                                                              count=2
+INFO [05-10|12:11:13] Initialising Ethereum protocol           versions="[63 62]" network=1144
+INFO [05-10|12:11:13] Loaded most recent local header          number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:11:13] Loaded most recent local full block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:11:13] Loaded most recent local fast block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:11:13] Loaded local transaction journal         transactions=0 dropped=0
+INFO [05-10|12:11:13] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [05-10|12:11:13] Starting P2P networking 
+INFO [05-10|12:11:16] UDP listener up                          self=enode://4084f9ad8672d10f789c21bae5fc06ecd68ff19a877807ebe6ef89618620665c3e883373777c9694e1783e530b0f92a0f7042285f1e8e30581bea06a29ea77ba@[::]:30303
+INFO [05-10|12:11:16] RLPx listener up                         self=enode://4084f9ad8672d10f789c21bae5fc06ecd68ff19a877807ebe6ef89618620665c3e883373777c9694e1783e530b0f92a0f7042285f1e8e30581bea06a29ea77ba@[::]:30303
+INFO [05-10|12:11:16] IPC endpoint opened                      url=/Users/agnes/Library/Ethereum/geth.ipc

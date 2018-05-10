@@ -1,0 +1,29 @@
+INFO [05-10|12:13:27] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [05-10|12:13:27] Starting peer-to-peer node               instance=Geth/v1.8.7-stable/darwin-amd64/go1.10.2
+INFO [05-10|12:13:27] Allocated cache and file handles         database=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/harvestChain/peer1DataDir/geth/chaindata cache=768 handles=128
+WARN [05-10|12:13:27] Upgrading database to use lookup entries 
+INFO [05-10|12:13:27] Database deduplication successful        deduped=0
+INFO [05-10|12:13:27] Initialised chain configuration          config="{ChainID: 2014 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Byzantium: 0 Constantinople: <nil> Engine: unknown}"
+INFO [05-10|12:13:27] Disk storage enabled for ethash caches   dir=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/harvestChain/peer1DataDir/geth/ethash count=3
+INFO [05-10|12:13:27] Disk storage enabled for ethash DAGs     dir=/Users/agnes/.ethash                                                                                               count=2
+INFO [05-10|12:13:27] Initialising Ethereum protocol           versions="[63 62]" network=1144
+INFO [05-10|12:13:27] Loaded most recent local header          number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:13:27] Loaded most recent local full block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:13:27] Loaded most recent local fast block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:13:27] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [05-10|12:13:27] Starting P2P networking 
+Fatal: Error starting protocol stack: listen udp :30303: bind: address already in use
+INFO [05-10|12:13:40] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [05-10|12:13:40] Starting peer-to-peer node               instance=Geth/v1.8.7-stable/darwin-amd64/go1.10.2
+INFO [05-10|12:13:40] Allocated cache and file handles         database=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/harvestChain/peer1DataDir/geth/chaindata cache=768 handles=128
+INFO [05-10|12:13:40] Initialised chain configuration          config="{ChainID: 2014 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: <nil> EIP155: 0 EIP158: 0 Byzantium: 0 Constantinople: <nil> Engine: unknown}"
+INFO [05-10|12:13:40] Disk storage enabled for ethash caches   dir=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/harvestChain/peer1DataDir/geth/ethash count=3
+INFO [05-10|12:13:40] Disk storage enabled for ethash DAGs     dir=/Users/agnes/.ethash                                                                                               count=2
+INFO [05-10|12:13:40] Initialising Ethereum protocol           versions="[63 62]" network=1244
+INFO [05-10|12:13:40] Loaded most recent local header          number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:13:40] Loaded most recent local full block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:13:40] Loaded most recent local fast block      number=0 hash=9d236a…641806 td=400
+INFO [05-10|12:13:40] Loaded local transaction journal         transactions=0 dropped=0
+INFO [05-10|12:13:40] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [05-10|12:13:40] Starting P2P networking 
+Fatal: Error starting protocol stack: listen udp :30303: bind: address already in use

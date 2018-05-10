@@ -1,0 +1,28 @@
+=============== May 10, 2018 (EDT) ===============
+12:09:56.315792 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:09:56.317172 db@open opening
+12:09:56.317650 version@stat F·[] S·0B[] Sc·[]
+12:09:56.317967 db@janitor F·2 G·0
+12:09:56.317995 db@open done T·804.876µs
+=============== May 10, 2018 (EDT) ===============
+12:10:26.309914 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:10:26.310137 version@stat F·[] S·0B[] Sc·[]
+12:10:26.310158 db@open opening
+12:10:26.310209 journal@recovery F·1
+12:10:26.313760 journal@recovery recovering @1
+12:10:26.314496 memdb@flush created L0@2 N·14 S·929B "\x1a:\xb1..\x8a\xe2\xb4,v3":"\x9b\xfc\x19..\x9f\x92\xfd,v5"
+12:10:26.317776 version@stat F·[1] S·929B[929B] Sc·[0.25]
+12:10:26.318772 db@janitor F·3 G·0
+12:10:26.318811 db@open done T·8.632042ms
+12:10:28.433344 db@close closing
+12:10:28.433536 db@close done T·191.406µs
+=============== May 10, 2018 (EDT) ===============
+12:11:13.946543 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:11:13.946765 version@stat F·[1] S·929B[929B] Sc·[0.25]
+12:11:13.946789 db@open opening
+12:11:13.946850 journal@recovery F·1
+12:11:13.950317 journal@recovery recovering @3
+12:11:13.951962 memdb@flush created L0@5 N·3 S·290B "Blo..ion,v17":"dbU..ata,v16"
+12:11:13.955510 version@stat F·[2] S·1KiB[1KiB] Sc·[0.50]
+12:11:13.956501 db@janitor F·4 G·0
+12:11:13.956539 db@open done T·9.729036ms
