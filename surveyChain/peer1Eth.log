@@ -39,3 +39,9 @@ INFO [05-10|12:11:16] IPC endpoint opened                      url=/Users/agnes/
 INFO [05-10|13:12:35] Regenerated local transaction journal    transactions=0 accounts=0
 INFO [05-10|14:12:35] Regenerated local transaction journal    transactions=0 accounts=0
 INFO [05-10|16:12:39] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [05-10|19:27:16] IPC endpoint closed                      endpoint=/Users/agnes/Library/Ethereum/geth.ipc
+INFO [05-10|19:27:16] Blockchain manager stopped 
+INFO [05-10|19:27:16] Stopping Ethereum protocol 
+INFO [05-10|19:27:16] Ethereum protocol stopped 
+INFO [05-10|19:27:16] Transaction pool stopped 
+INFO [05-10|19:27:16] Database closed                          database=/Users/agnes/Documents/MIT/security/6.857/multiple_blockchain_swarm_robotics/surveyChain/peer1DataDir/geth/chaindata
