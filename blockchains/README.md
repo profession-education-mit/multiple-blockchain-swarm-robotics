@@ -1,10 +1,10 @@
-#Deploying multiple testnet blockchains to a local network:
+# Deploying multiple testnet blockchains to a local network:
 
 need to set up two different geth testnets on two different ports. Each blockchain needs a separate folder.
 
 Instructions adapted from: https://medium.com/mercuryprotocol/how-to-create-your-own-private-ethereum-blockchain-dad6af82fc9f)
 
-##If creating the directories from scratch
+## If creating the directories from scratch
 
 First, make a directory to hold the chain
 ```

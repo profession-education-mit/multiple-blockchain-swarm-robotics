@@ -36,3 +36,6 @@ INFO [05-10|12:11:13] Starting P2P networking
 INFO [05-10|12:11:16] UDP listener up                          self=enode://4084f9ad8672d10f789c21bae5fc06ecd68ff19a877807ebe6ef89618620665c3e883373777c9694e1783e530b0f92a0f7042285f1e8e30581bea06a29ea77ba@[::]:30303
 INFO [05-10|12:11:16] RLPx listener up                         self=enode://4084f9ad8672d10f789c21bae5fc06ecd68ff19a877807ebe6ef89618620665c3e883373777c9694e1783e530b0f92a0f7042285f1e8e30581bea06a29ea77ba@[::]:30303
 INFO [05-10|12:11:16] IPC endpoint opened                      url=/Users/agnes/Library/Ethereum/geth.ipc
+INFO [05-10|13:12:35] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [05-10|14:12:35] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [05-10|16:12:39] Regenerated local transaction journal    transactions=0 accounts=0
