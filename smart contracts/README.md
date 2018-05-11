@@ -8,7 +8,7 @@ $ npm install solc
 ...
 $ npm install ganache-cli
 ...
-$ ganache-cli
+$  ganache-cli --gasLimit=1000000000000 --gasPrice 200 --deterministic --account "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d, 100000000000000000000000000000000"
 listening on host 8545...
 ````
 
@@ -22,9 +22,9 @@ $ node
 > solc = require('solc')
 > compiledCode = solc.compile(code)
 > abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
-> surveyVotingContract = web3.eth.contract(abiDefinition)
+> surveyVotingContract = web3Chain1.eth.contract(abiDefinition)
 > byteCode = compiledCode.contracts[':Voting'].bytecode
-> deployedContract = surveyVotingContract.new(['White', 'Red'],{data: byteCode, from: web3.eth.accounts[0], gas: 4700000})
+> deployedContract = surveyVotingContract.new(['White', 'Red'],{data: byteCode, from: web3Chain1.eth.accounts[0], gas: 4700000})
 > deployedContract.address // copy this into grid.js, contractInstance --  it changes every time
 > contractInstance = surveyVotingContract.at(deployedContract.address)
 ````
