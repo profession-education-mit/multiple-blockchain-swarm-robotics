@@ -21,13 +21,19 @@ function init(){
 	var robotRange = 6;
 	var numLocalOpinions = 5;
 
+	var dirtImage = new Image();
+    dirtImage.src = 'assets/images/dirt.png';
+
+    var greenImage = new Image();
+    greenImage.src = 'assets/images/green.png';
+
 	//arrays of robots
 	var surveyBotArr = [];
 	var harvestBotArr = [];
 
 	//symbols
 	var surveySymbol = 'x';
-	var harvestSymbol = 'o';	
+	var harvestSymbol = 'o';
 
 	//handles the canvas
 	var c = document.getElementById("canvas");
@@ -35,9 +41,9 @@ function init(){
 	initialiseGrid(); //create the starting state for the grid by filling it with random cells
 	drawGrid();
 	initialiseRobots(surveyBotArr, numSurveyBots, numSurveyByzantine);
-	initialiseRobots(harvestBotArr, numHarvestBots, numHarvestByzantine);	
+	initialiseRobots(harvestBotArr, numHarvestBots, numHarvestByzantine);
 	main();
-	
+
 	//functions
 	async function main() { //main loop
 		while(true){
@@ -124,10 +130,13 @@ function init(){
 	    for (var j = 0; j < gridHeight; j++) { //iterate through rows
 	        for (var k = 0; k < gridWidth; k++) { //iterate through columns
 	            if (theGrid[k + j*gridWidth].red == 1) {
-	                ctx.fillRect(0.5 + j*blockSize, 0.5 + k*blockSize, blockSize, blockSize);
-	                ctx.fill();  
+	                ctx.drawImage(greenImage, 0.5 + j*blockSize, 0.5 + k*blockSize, blockSize, blockSize);
 	            }
-	        }
+
+                else {
+                    ctx.drawImage(dirtImage, 0.5 + j*blockSize, 0.5 + k*blockSize, blockSize, blockSize);
+                }
+            }
 	    }
 	}
 
@@ -153,7 +162,7 @@ function init(){
 			}
 			//increment total square count
 			robotArr[i].totalSquares++;
-		}	
+		}
 	}
 
 	function moveRobots(robotArr, numRobots){
@@ -172,7 +181,7 @@ function init(){
 				case(1): //east
 					nextj = j+1;
 					nextk = k;
-					break;			
+					break;
 				case(2): //south
 					nextj = j;
 					nextk = k-1;
@@ -189,7 +198,7 @@ function init(){
 			else if(nextj >= gridHeight) nextj = 0;
 
 			else if(nextk >= gridHeight) nextk = 0;
-				
+
 			if(theGrid[nextk + nextj*gridWidth].hasRobot == false){
 				robotArr[i].j = nextj;
 				robotArr[i].k = nextk;
@@ -202,16 +211,16 @@ function init(){
 
 
 	function surveyBotVoting(robotArr, numRobots) {
-		for (var i = 0; i < numRobots; i++) { 
+		for (var i = 0; i < numRobots; i++) {
 			formSurveyOpinion(robotArr[i]);
 			findLocalGroup(robotArr[i], numRobots, robotArr);
 			}
 
 		//separate loops as need to all form groups and opinions first
-		for (var i = 0; i < numRobots; i++) { 
+		for (var i = 0; i < numRobots; i++) {
 			getLocalOpinion(robotArr[i], numRobots, robotArr);
 			vote(robotArr[i]);
-		}	
+		}
 	}
 
 	function formSurveyOpinion(bot) {
