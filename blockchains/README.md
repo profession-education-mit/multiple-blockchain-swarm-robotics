@@ -4,7 +4,7 @@ need to set up two different geth testnets on two different ports. Each blockcha
 
 Instructions adapted from: https://medium.com/mercuryprotocol/how-to-create-your-own-private-ethereum-blockchain-dad6af82fc9f)
 
-## If creating the directories from scratch
+### If creating the directories from scratch
 
 First, make a directory to hold the chain
 ```
@@ -47,8 +47,13 @@ $ geth --datadir ./peer1DataDir init ./Genesis.json
 $ geth --datadir ./peer1DataDir --networkid 1244 --ipcpath  "~/Library/Ethereum/geth.ipc" --port 30303  console 2>> peer1Eth.log
 ```
 
-## If launching the directories in this repo (assuming the mac path to `geth.ipc`):
+### If launching the directories in this repo (assuming the mac path to `geth.ipc`):
 Launch the geth console for each network instance: change the port for each new chain
 ```
 $ geth --datadir ./peer1DataDir --networkid 1244 --ipcpath  "~/Library/Ethereum/geth.ipc" --port 30303  console 2>> peer1Eth.log
 ```
+
+
+
+## Getting Peers into the network
+Once all the peers you want to make have been added, to include them in the testnet you need to connect them to one another.
