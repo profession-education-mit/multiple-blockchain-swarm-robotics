@@ -68,6 +68,9 @@ runScript('./server/geth_processes/creategeths.js', function (err) {
 });
 
 
+
+
+
 // force: true drops your database every time you start the server
 // logging: true allows you to see all the database logging
 models.sequelize.sync({force: true, logging: false}).then(() => {
