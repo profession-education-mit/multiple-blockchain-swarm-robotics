@@ -3,11 +3,13 @@ Make two blockchains using Ganache. The `smart contracts` directory contains the
 
 In order to compile the smart contracts with node, run the following commands (in the node console). NB -- in order to do this you must have solc (the solidity compiler) and ganache-cli installed, and ganache needs to be running. 
 
+MAKE SURE that you are using the latest version of nodejs
 ````
 $ npm install solc
 ...
 $ npm install ganache-cli
 ...
+$ npm install web3
 $  ganache-cli --gasLimit=1000000000000 --gasPrice 200 --deterministic --account "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d, 100000000000000000000000000000000"
 
 listening on host 8545...
