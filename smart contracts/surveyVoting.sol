@@ -22,7 +22,7 @@ contract Voting {
   uint64 totalVotes;
   uint64 maxVotes;
   bytes32 maxOpinion;
-  uint64 public n_rounds;
+  uint64 public n_rounds = 0;
   address[] public voterIDs;
 
   /* Maps how many times a certain address has been in the minority*/
@@ -30,6 +30,9 @@ contract Voting {
 
   /* Maps an address to a vote for each round (updated, not cleared, after each round)*/
   mapping (address => bytes32) public individualVotes;
+
+  /* Maps addresses to a boolean indicating if it is banned or not */
+  mapping (address => bool) public bannedRobots;
 
 
   /* This is the constructor which will be called once when you
@@ -48,9 +51,15 @@ contract Voting {
     }
     n_rounds = n_rounds + 1;
 
-    for(uint i = 0; i < voterIDs.length; i++) {
-        if (individualVotes[voterIDs[i]] != maxOpinion) {
-            byzantineCount[voterIDs[i]] += 1;
+    for(uint j = 0; j < voterIDs.length; j++) {
+        if (individualVotes[voterIDs[j]] != maxOpinion) {
+            byzantineCount[voterIDs[j]] += 1;
+        }
+
+        if (n_rounds > 8){
+            if (byzantineCount[voterIDs[j]] > n_rounds/2) {
+                bannedRobots[voterIDs[j]] = true;
+            }
         }
 
      voterIDs = new address[](0);  /* this might not be a good way to do this*/
@@ -88,10 +97,14 @@ contract Voting {
   function voteForOpinion(bytes32 opinion, address sender) public {
       require(validOpinion(opinion));
       onVote(opinion, sender);
-      if (byzantineCount[sender] < 0.7*n_rounds) {
+      if (n_rounds < 1) {
+          bannedRobots[sender] = false;
+      }
+
+      if (!bannedRobots[sender]) {
           votesReceived[opinion] += 1;
           individualVotes[sender] = opinion;
-          voterIDs += sender;
+          voterIDs.push(sender);
           totalVotes += 1;
       }
   }
