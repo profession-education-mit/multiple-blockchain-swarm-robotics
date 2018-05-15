@@ -10,3 +10,5 @@ byteCode = compiledCode.contracts[':Voting'].bytecode
 deployedContract = surveyVotingContract.new(['White', 'Red'],{data: byteCode, from: web3Chain1.eth.accounts[0], gas: 4700000})
 deployedContract.address
 contractInstance = surveyVotingContract.at(deployedContract.address)
+compiledCode.contracts[':Voting'].interface
+deployedContract.address

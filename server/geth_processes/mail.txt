@@ -1,0 +1,1 @@
+Fatal: Unable to attach to remote geth: dial unix eth_data/data00/geth.ipc: connect: no such file or directory

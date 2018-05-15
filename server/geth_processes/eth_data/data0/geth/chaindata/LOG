@@ -1,0 +1,38 @@
+=============== May 13, 2018 (EDT) ===============
+20:14:52.313737 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:14:52.314506 db@open opening
+20:14:52.315860 version@stat F·[] S·0B[] Sc·[]
+20:14:52.316110 db@janitor F·2 G·0
+20:14:52.316143 db@open done T·1.618059ms
+=============== May 13, 2018 (EDT) ===============
+20:14:58.398847 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:14:58.399057 version@stat F·[] S·0B[] Sc·[]
+20:14:58.399079 db@open opening
+20:14:58.399131 journal@recovery F·1
+20:14:58.402689 journal@recovery recovering @1
+20:14:58.403477 memdb@flush created L0@2 N·14 S·898B ",\xff\xac..\xe3-\xfc,v5":"\xeb@\xf6..\x9fe\x91,v3"
+20:14:58.407352 version@stat F·[1] S·898B[898B] Sc·[0.25]
+20:14:58.408469 db@janitor F·3 G·0
+20:14:58.408508 db@open done T·9.416507ms
+20:15:09.930610 db@close closing
+20:15:09.930742 db@close done T·128.576µs
+=============== May 13, 2018 (EDT) ===============
+20:15:30.241905 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:15:30.242266 version@stat F·[1] S·898B[898B] Sc·[0.25]
+20:15:30.242303 db@open opening
+20:15:30.242401 journal@recovery F·1
+20:15:30.242807 journal@recovery recovering @3
+20:15:30.244230 memdb@flush created L0@5 N·3 S·290B "Blo..ion,v17":"dbU..ata,v16"
+20:15:30.244562 version@stat F·[2] S·1KiB[1KiB] Sc·[0.50]
+20:15:30.245594 db@janitor F·4 G·0
+20:15:30.245629 db@open done T·3.298355ms
+=============== May 13, 2018 (EDT) ===============
+20:15:36.336317 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:15:36.336537 version@stat F·[2] S·1KiB[1KiB] Sc·[0.50]
+20:15:36.336560 db@open opening
+20:15:36.336621 journal@recovery F·1
+20:15:36.339858 journal@recovery recovering @6
+20:15:36.341307 memdb@flush created L0@8 N·1 S·301B "eth..\x9d\xf7\xba,v20":"eth..\x9d\xf7\xba,v20"
+20:15:36.344523 version@stat F·[3] S·1KiB[1KiB] Sc·[0.75]
+20:15:36.345471 db@janitor F·5 G·0
+20:15:36.345510 db@open done T·8.93031ms
