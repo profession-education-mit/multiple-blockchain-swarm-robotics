@@ -1,12 +1,18 @@
 pragma solidity ^0.4.21;
 // We have to specify what version of compiler this code will compile with
 
+
+
 contract Voting {
   /* mapping field below is equivalent to an associative array or hash.
   The key of the mapping is candidate name stored as type bytes32 and value is
   an unsigned integer to store the vote count
   */
   
+
+  event onVote(bool opinion, address sender);
+  event onVotingEnded(bool consensus, bool opinion);
+
   mapping (bool => uint64) public votesReceived;
   
   /* Solidity doesn't let you pass in an array of strings in the constructor (yet).
