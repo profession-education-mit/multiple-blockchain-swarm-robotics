@@ -1,11 +1,20 @@
 //draws the grid for the robots
 function init(){
-	//contract setup
+	//survey bot contract setup
 	web3Chain1 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-	abi = JSON.parse('[{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"votingRoundEnded","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"opinion","type":"bytes32"},{"name":"sender","type":"address"}],"name":"voteForOpinion","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"consensusReached","outputs":[{"name":"","type":"bool"},{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"countVotes","outputs":[{"name":"","type":"bytes32"},{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"validOpinion","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"opinionList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"opinionNames","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"opinion","type":"bytes32"},{"indexed":false,"name":"sender","type":"address"}],"name":"onVote","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"consensus","type":"bool"},{"indexed":false,"name":"opinion","type":"bytes32"}],"name":"onVotingEnded","type":"event"}]');
-	surveyVotingContract = web3Chain1.eth.contract(abi);
-	contractInstance = surveyVotingContract.at('0x66044294d946db9fde80c86efe45a4e629319636');
-	opinions = {"White": "white", "Red": "red"};
+	surveyAbi = JSON.parse('[{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"votingRoundEnded","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"opinion","type":"bytes32"},{"name":"sender","type":"address"}],"name":"voteForOpinion","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"consensusReached","outputs":[{"name":"","type":"bool"},{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"countVotes","outputs":[{"name":"","type":"bytes32"},{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"validOpinion","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"opinionList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"opinionNames","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"opinion","type":"bytes32"},{"indexed":false,"name":"sender","type":"address"}],"name":"onVote","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"consensus","type":"bool"},{"indexed":false,"name":"opinion","type":"bytes32"}],"name":"onVotingEnded","type":"event"}]');
+	surveyVotingContract = web3Chain1.eth.contract(surveyAbi);
+	surveyContractInstance = surveyVotingContract.at('0x71ed0d5211498432d68b62881ac927dd83a476ac');
+	surveyOpinions = {"White": "white", "Red": "red"};
+
+
+	//harvest bot contract setup
+	web3Chain2 = new Web3(new Web3.providers.HttpProvider("http://localhost:8555"));
+	harvestAbi = JSON.parse('[{"constant":true,"inputs":[{"name":"","type":"bool"}],"name":"votesReceived","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"opinion","type":"bool"}],"name":"voteForOpinion","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"opinion","type":"bool"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"opinionList","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"opinionNames","type":"bool[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]');
+	harvestVotingContract = web3Chain2.eth.contract(harvestAbi);
+	harvestContractInstance = harvestVotingContract.at('0x0543032bb3777adcf66cb2ca1c590bab991e0dc5');
+	harvestOpinions = {true: true, false: false};
+
 
 	addresses = [
 	"0x5521a68d4f8253fc44bfb1490249369b3e299a4a",
@@ -97,7 +106,10 @@ function init(){
 		    moveRobots(harvestBotArr, numHarvestBots);
 
 		    surveyBotVoting(surveyBotArr, numSurveyBots);
+		    harvestBotVoting(harvestBotArr, numHarvestBots);		    
 		    resetRobots(surveyBotArr);
+
+
 
 		    //generic wait (3 secs)
 		    await sleep(1000);
@@ -239,7 +251,7 @@ function init(){
 	}
 
 	function getVoteEvents(){
-		var event = contractInstance.onVote(function(error, result) {
+		var event = surveyContractInstance.onVote(function(error, result) {
     		if (!error) console.log("event is ", result);
     		else console.log(error);
 		});
@@ -247,7 +259,7 @@ function init(){
 
 
 	function getEndOfVotingEvents(){
-		var event = contractInstance.onVotingEnded(function(error, result) {
+		var event = surveyContractInstance.onVotingEnded(function(error, result) {
     		if (!error) console.log("event is ", result);
     		else console.log(error);
 		});
@@ -256,8 +268,8 @@ function init(){
 	function getLatestSurveyBlock(){
 		surveyBlock = web3Chain1.eth.getBlock(web3Chain1.eth.blockNumber);
 		console.log(surveyBlock);
-		votesForRed = contractInstance.totalVotesFor("Red", {from: web3Chain1.eth.accounts[0]});
-		votesForWhite = contractInstance.totalVotesFor("White", {from: web3Chain1.eth.accounts[0]});
+		votesForRed = surveyContractInstance.totalVotesFor("Red", {from: web3Chain1.eth.accounts[0]});
+		votesForWhite = surveyContractInstance.totalVotesFor("White", {from: web3Chain1.eth.accounts[0]});
 		console.log(votesForRed, votesForWhite);
 	}
 
@@ -270,27 +282,38 @@ function init(){
 		//separate loops as need to all form groups and opinions first
 		for (var i = 0; i < numRobots; i++) {
 			getLocalOpinion(robotArr[i], numRobots, robotArr);
-			vote(robotArr[i]);
+			surveyVote(robotArr[i]);
 		}
 		getLatestSurveyBlock();
-		contractInstance.votingRoundEnded({from: web3Chain1.eth.accounts[0]});
+		surveyContractInstance.votingRoundEnded({from: web3Chain1.eth.accounts[0]});
 		getVoteEvents();
 		getEndOfVotingEvents()
 		// //test to see if it can find old votes:
-		// votesForWhite = pastContractInstance.totalVotesFor("White", {from: web3Chain1.eth.accounts[0]});
+		// votesForWhite = pastsurveyContractInstance.totalVotesFor("White", {from: web3Chain1.eth.accounts[0]});
 		// console.log("old votes for white are:", votesForWhite);
 	}
 
+
+	function harvestBotVoting (robotArr, numRobots) {
+		for (var i=0; i < numRobots; i++){
+			formHarvestOpinion(robotArr[i]);
+			harvestVote(robotArr[i]);
+		}
+	}
+
+
+
 	function formSurveyOpinion(bot) {
 		if(bot.byzantine == false){
-			if (bot.totalSquares/2 > bot.redSquares) bot.opinion = 'White'
+			if (bot.totalSquares/2 > bot.redSquares) bot.opinion = 'White';
 			else  bot.opinion = 'Red';
 		}
 		else bot.opinion = 'Red';
 	}
 
-	function formHarvestOpinion() {
-
+	function formHarvestOpinion(bot) {
+		if(Math.random() > 0.5) bot.localGroupOpinion = "No consensus";
+		else bot.localGroupOpinion = "No consensus";
 	}
 
 	function findLocalGroup(bot, numRobots, robotArr) {
@@ -344,12 +367,20 @@ function init(){
 		console.log("my opinion is ", bot.opinion)
 	}
 
-	function vote(bot) {
+	function surveyVote(bot) {
 		//submit vector of local opinions as votes
-		contractInstance.voteForOpinion(bot.localGroupOpinion, bot.address, {from: web3Chain1.eth.accounts[0], data:web3Chain1.toHex('abc')});
+		surveyContractInstance.voteForOpinion(bot.localGroupOpinion, bot.address, {from: web3Chain1.eth.accounts[0]});
   		var val = web3Chain1.eth.blockNumber;
   		console.log(val);
 	}
+
+	function harvestVote(bot) {
+		//submit vector of local opinions as votes
+		harvestContractInstance.voteForOpinion(bot.localGroupOpinion, {from: web3Chain2.eth.accounts[0]});
+  		var val = web3Chain2.eth.blockNumber;
+  		console.log(val);
+	}
+
 
 	function pollLocalSurveyBots() {
 		// each harvest bot polls all the survey bots in the local group for the state of the chain

@@ -7,41 +7,30 @@ contract Voting {
   an unsigned integer to store the vote count
   */
   
-  mapping (bytes32 => uint8) public votesReceived;
+  mapping (bool => uint64) public votesReceived;
   
   /* Solidity doesn't let you pass in an array of strings in the constructor (yet).
   We will use an array of bytes32 instead to store the list of candidates
   */
   
-  bytes32[] public opinionList;
+  bool[] public opinionList;
 
   /* This is the constructor which will be called once when you
   deploy the contract to the blockchain. When we deploy the contract,
   we will pass an array of candidates who will be contesting in the election
   */
-  function Voting(bytes32[] candidateNames) public {
+  function Voting(bool[] opinionNames) public {
     opinionList = opinionNames;
   }
 
   // This function returns the total votes a candidate has received so far
-  function totalVotesFor(bytes32 opinion) view public returns (uint8) {
-    require(validOpinion(opinion));
+  function totalVotesFor(bool opinion) view public returns (uint64) {
     return votesReceived[opinion];
   }
 
   // This function increments the vote count for the specified candidate. This
   // is equivalent to casting a vote
-  function voteForOpinion(bytes32 opinion) public {
-    require(validCandidate(opinion));
+  function voteForOpinion(bool opinion) public {
     votesReceived[opinion] += 1;
-  }
-
-  function validOpinion(bytes32 opinion) view public returns (bool) {
-    for(uint i = 0; i < opinionList.length; i++) {
-      if (opinionList[i] == opinion) {
-        return true;
-      }
-    }
-    return false;
   }
 }

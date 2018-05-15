@@ -1,5 +1,5 @@
-This directory contains the smart contracts for both the survey and harvest blockchains. 
-
+# Deploying the contracts
+Make two blockchains using Ganache. The `smart contracts` directory contains the smart contracts for both the survey and harvest blockchains. 
 
 In order to compile the smart contracts with node, run the following commands (in the node console). NB -- in order to do this you must have solc (the solidity compiler) and ganache-cli installed, and ganache needs to be running. 
 
@@ -9,10 +9,19 @@ $ npm install solc
 $ npm install ganache-cli
 ...
 $  ganache-cli --gasLimit=1000000000000 --gasPrice 200 --deterministic --account "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d, 100000000000000000000000000000000"
+
 listening on host 8545...
 ````
 
-In order to compile the smart contracts, enter the node console in this folder (example for the survey chain first):
+To deploy the second blockchain: 
+```
+$  ganache-cli --gasLimit=1000000000000 --port 8555 --gasPrice 200 --deterministic --account "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d, 100000000000000000000000000000000"
+
+listening on host 8555...
+```
+
+
+In order to compile the smart contracts, enter the node console in this folder (example for the survey chain first). This code is now in `deploySurveyContract.sh`. Because of a bug with printing the adress from the command line, to deploy the contract, copy and paste the code from this into the terminal.
 
 ````
 $ node
@@ -29,6 +38,8 @@ $ node
 > contractInstance = surveyVotingContract.at(deployedContract.address)
 ````
 
+The same applies to the harvest chain, with the chain name, port and contract changed. 
+
 If making a change to the smart contract, you also need to copy the `abi` representation:
 
 ````
@@ -41,3 +52,6 @@ copy into `grid.js`:
 ````
 abi = JSON.parse(<new-abi>)
 ````
+
+Copy and paste the values for the `surveyChain` contract into `surveyAbi` (abi) and `surveyContractInstance` (address). Do the same for the harvest contract.
+
