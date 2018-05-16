@@ -109,7 +109,8 @@ function init(){
 		    harvestBotVoting(harvestBotArr, numHarvestBots);	
 		    surveyContractInstance.votingRoundEnded({from: web3Chain1.eth.accounts[1],  gas: 500000});
 		    byz = surveyContractInstance.seeBanned();
-		    console.log(byz);
+		    console.log(byz[1]);
+		    markByzantineRobots(byz[1], surveyBotArr);
 		    //harvestContractInstance.votingRoundEnded({from: web3Chain2.eth.accounts[0]});   
 		    resetRobots(surveyBotArr);
 		    resetRobots(harvestBotArr);
@@ -161,7 +162,8 @@ function init(){
 					redSquares:0,
 					totalSquares:0,
 					localGroup: [],
-					localGroupOpinion: []
+					localGroupOpinion: [],
+					discovered: false
 				});
 				theGrid[k + j*gridWidth].hasRobot = true;
 				i++;
@@ -171,6 +173,11 @@ function init(){
 		}
 	}
 
+	function markByzantineRobots(byzArr, robotArr) {
+		for(var i=0; i<byzArr.length; i++){
+			if(byzArr[i] == true) robotArr[i].discovered = true;
+		}
+	}
 
 	function drawGrid() { //draw the contents of the grid onto a canvas
     ctx.fillStyle = "red";
@@ -193,7 +200,8 @@ function init(){
 		// place a robot on a random square
 		for (var i = 0; i < robotArr.length; i++){
 	        ctx.font = "bold 40px Arial";
-	        if(robotArr[i].byzantine == true) ctx.fillStyle = "blue";
+	        if(robotArr[i].discovered == true) ctx.fillStyle = "yellow";
+	        else if(robotArr[i].byzantine == true) ctx.fillStyle = "blue";
 			else ctx.fillStyle = "black";
             ctx.fillText(symbol, (robotArr[i].j)*blockSize + 15, (robotArr[i].k)*blockSize + 38);
         	}
@@ -274,10 +282,8 @@ function init(){
 
 	function getLatestSurveyBlock(){
 		surveyBlock = web3Chain1.eth.getBlock(web3Chain1.eth.blockNumber);
-		console.log(surveyBlock);
 		votesForRed = surveyContractInstance.totalVotesFor("Red", {from: web3Chain1.eth.accounts[0]});
 		votesForWhite = surveyContractInstance.totalVotesFor("White", {from: web3Chain1.eth.accounts[0]});
-		console.log(votesForRed, votesForWhite);
 	}
 
 	function surveyBotVoting(robotArr, numRobots) {
@@ -343,8 +349,6 @@ function init(){
 			}
 			//otherwise, not in local group
 		}
-
-		console.log("local group is ", bot.localGroup);
 	}
 
 	function findEuclideanDistance(x1, y1, x2, y2) {
@@ -371,22 +375,14 @@ function init(){
 		}
 	}
 
-	function broadCast(bot) {
-		console.log("my opinion is ", bot.opinion)
-	}
-
 	function surveyVote(bot) {
 		//submit vector of local opinions as votes
 		surveyContractInstance.voteForOpinion(bot.localGroupOpinion, bot.id, {from: web3Chain1.eth.accounts[0]});
-  		var val = web3Chain1.eth.blockNumber;
-  		console.log(val);
 	}
 
 	function harvestVote(bot) {
 		//submit vector of local opinions as votes
 		harvestContractInstance.voteForOpinion(bot.localGroupOpinion, bot.id, {from: web3Chain2.eth.accounts[0]});
-  		var val = web3Chain2.eth.blockNumber;
-  		console.log(val);
 	}
 
 	function hexToAscii(hexNum) {
@@ -422,7 +418,6 @@ function init(){
 			if((numRed)/i > 0.5) bot.localGroupOpinion = 'Red';
 			else  bot.localGroupOpinion = 'White';
 		}
-
 		bot.localGroup = [];
 
 	}
