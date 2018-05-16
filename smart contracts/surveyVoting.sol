@@ -9,22 +9,17 @@ contract Voting {
 
   event onVote(bytes32 opinion, address sender);
   event onVotingEnded(bool consensus, bytes32 opinion);
-  event onByzantine(address byzantineRobot);
 
   mapping (bytes32 => uint64) public votesReceived;
 
-  /* Maps an address to a vote for each round (updated, not cleared, after each round)*/
-  mapping (uint8 => bytes32) public individualVotes;
-
-  /* Maps addresses to a boolean indicating if it is banned or not */
-  mapping (uint8 => bool) public bannedRobots;
-
   bytes32[] public opinionList;
+  bytes32[20] public individualVotes;
+  bool[20] public bannedRobots;
   uint64 totalVotes;
   uint64 maxVotes;
   bytes32 maxOpinion;
   bool consensus;
-  uint64 public numRounds = 0;
+  uint64 numRounds;
   uint32[20] public byzantineCount;
 //  address[] public voterIDs;
 
@@ -39,24 +34,27 @@ contract Voting {
 
   function votingRoundEnded() public {
     consensusReached();
+    numRounds += 1;
     for(uint8 i = 0; i < opinionList.length; i++) {
         votesReceived[opinionList[i]] = 0;
         totalVotes = 0;
     }
-    numRounds = numRounds + 1;
 
     for(uint8 j = 0; j < 20; j++) {
         if (individualVotes[j] != maxOpinion) {
             byzantineCount[j] += 1;
         }
 
-        if (numRounds > 6){
+        if (numRounds > 4){
             if (byzantineCount[j] > numRounds/2) {
                 bannedRobots[j] = true;
-                onByzantine(j);
             }
         }
     }
+  }
+
+  function seeBanned() view public returns (uint32[20], bool[20], uint64) {
+      return(byzantineCount, bannedRobots, numRounds);
   }
 
   function countVotes() view public returns (bytes32, uint64, uint64) {
@@ -99,6 +97,11 @@ contract Voting {
           individualVotes[sender] = opinion;
           totalVotes += 1;
       }
+  }
+
+
+  function initialise() {
+    numRounds = 0;
   }
 
   function validOpinion(bytes32 opinion) view public returns (bool) {

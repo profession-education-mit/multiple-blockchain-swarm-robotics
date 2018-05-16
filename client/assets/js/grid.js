@@ -2,9 +2,9 @@
 function init(){
 	//survey bot contract setup
 	web3Chain1 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-	surveyAbi = JSON.parse('[{"constant":true,"inputs":[{"name":"","type":"uint8"}],"name":"bannedRobots","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"byzantineCount","outputs":[{"name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"votingRoundEnded","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"consensusReached","outputs":[{"name":"","type":"bool"},{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numRounds","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"countVotes","outputs":[{"name":"","type":"bytes32"},{"name":"","type":"uint64"},{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint8"}],"name":"individualVotes","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"validOpinion","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"opinionList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"opinion","type":"bytes32"},{"name":"sender","type":"uint8"}],"name":"voteForOpinion","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"opinionNames","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"opinion","type":"bytes32"},{"indexed":false,"name":"sender","type":"address"}],"name":"onVote","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"consensus","type":"bool"},{"indexed":false,"name":"opinion","type":"bytes32"}],"name":"onVotingEnded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"byzantineRobot","type":"address"}],"name":"onByzantine","type":"event"}]');
+	surveyAbi = JSON.parse('[{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"byzantineCount","outputs":[{"name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"initialise","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"votingRoundEnded","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"bannedRobots","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"consensusReached","outputs":[{"name":"","type":"bool"},{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numRounds","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"individualVotes","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"countVotes","outputs":[{"name":"","type":"bytes32"},{"name":"","type":"uint64"},{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"seeBanned","outputs":[{"name":"","type":"uint32[20]"},{"name":"","type":"bool[20]"},{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"opinion","type":"bytes32"}],"name":"validOpinion","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"opinionList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"opinion","type":"bytes32"},{"name":"sender","type":"uint8"}],"name":"voteForOpinion","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"opinionNames","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"opinion","type":"bytes32"},{"indexed":false,"name":"sender","type":"address"}],"name":"onVote","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"consensus","type":"bool"},{"indexed":false,"name":"opinion","type":"bytes32"}],"name":"onVotingEnded","type":"event"}]');
 	surveyVotingContract = web3Chain1.eth.contract(surveyAbi);
-	surveyContractInstance = surveyVotingContract.at('0x6ba568614a816e31e15b024e0382eec23909dd07');
+	surveyContractInstance = surveyVotingContract.at('0xcdd8913719e7ea030fee37464c237bb067ae38c5');
 	surveyOpinions = {"White": "white", "Red": "red"};
 
 
@@ -77,6 +77,7 @@ function init(){
 	drawGrid();
 	initialiseRobots(surveyBotArr, numSurveyBots, numSurveyByzantine);
 	initialiseRobots(harvestBotArr, numHarvestBots, numHarvestByzantine);
+	surveyContractInstance.initialise({from: web3Chain1.eth.accounts[0]});	
 	main();
 
 	//functions
@@ -105,7 +106,9 @@ function init(){
 
 		    surveyBotVoting(surveyBotArr, numSurveyBots);
 		    harvestBotVoting(harvestBotArr, numHarvestBots);	
-		    surveyContractInstance.votingRoundEnded({from: web3Chain1.eth.accounts[1],  gas: 20000000});
+		    surveyContractInstance.votingRoundEnded({from: web3Chain1.eth.accounts[1],  gas: 500000});
+		    byz = surveyContractInstance.seeBanned();
+		    console.log(byz);
 		    //harvestContractInstance.votingRoundEnded({from: web3Chain2.eth.accounts[0]});   
 		    resetRobots(surveyBotArr);
 		    resetRobots(harvestBotArr);
@@ -373,14 +376,14 @@ function init(){
 
 	function surveyVote(bot) {
 		//submit vector of local opinions as votes
-		surveyContractInstance.voteForOpinion(bot.localGroupOpinion, bot.address, {from: web3Chain1.eth.accounts[0]});
+		surveyContractInstance.voteForOpinion(bot.localGroupOpinion, bot.id, {from: web3Chain1.eth.accounts[0]});
   		var val = web3Chain1.eth.blockNumber;
   		console.log(val);
 	}
 
 	function harvestVote(bot) {
 		//submit vector of local opinions as votes
-		harvestContractInstance.voteForOpinion(bot.localGroupOpinion, bot.address, {from: web3Chain2.eth.accounts[0]});
+		harvestContractInstance.voteForOpinion(bot.localGroupOpinion, bot.id, {from: web3Chain2.eth.accounts[0]});
   		var val = web3Chain2.eth.blockNumber;
   		console.log(val);
 	}
