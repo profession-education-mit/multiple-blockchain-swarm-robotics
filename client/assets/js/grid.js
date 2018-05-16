@@ -49,8 +49,8 @@ function init(){
 	var theGrid = [];
 	var blockSize = 50;
 	var numSurveyBots = 20;
-	var numSurveyByzantine = 5;
-	var numHarvestByzantine = 1;
+	var numSurveyByzantine = 6;
+	var numHarvestByzantine = 3;
 	var numHarvestBots = 10;
 	var stepsToCount = 10;
 	var robotRange = 6;
@@ -108,9 +108,13 @@ function init(){
 		    surveyBotVoting(surveyBotArr, numSurveyBots);
 		    harvestBotVoting(harvestBotArr, numHarvestBots);	
 		    surveyContractInstance.votingRoundEnded({from: web3Chain1.eth.accounts[1],  gas: 500000});
-		    byz = surveyContractInstance.seeBanned();
-		    console.log(byz[1]);
-		    markByzantineRobots(byz[1], surveyBotArr);
+		    harvestContractInstance.votingRoundEnded({from: web3Chain2.eth.accounts[1],  gas: 500000});		    
+		    byzSurvey = surveyContractInstance.seeBanned();
+		    console.log("byzsurvey", byzSurvey[1]);
+		    markByzantineRobots(byzSurvey[1], surveyBotArr);
+		    byzHarvest = harvestContractInstance.seeBanned();		    
+		    console.log("byzharvest", byzHarvest[1]);
+		    markByzantineRobots(byzHarvest[1], harvestBotArr);		    
 		    //harvestContractInstance.votingRoundEnded({from: web3Chain2.eth.accounts[0]});   
 		    resetRobots(surveyBotArr);
 		    resetRobots(harvestBotArr);
@@ -308,6 +312,7 @@ function init(){
 	function harvestBotVoting (robotArr, numRobots) {
 		for (var i=0; i < numRobots; i++){
 			pollLocalSurveyBots(robotArr[i], numRobots);
+			findLocalGroup(robotArr[i], numRobots, robotArr);
 		}
 
 		for (var i=0; i < numRobots; i++){
@@ -326,8 +331,21 @@ function init(){
 	}
 
 	function formHarvestOpinion(bot) {
-		if(Math.random() > 0.5) bot.localGroupOpinion = "No consensus";
-		else bot.localGroupOpinion = "No consensus";
+		groupSize = bot.localGroup.length;
+
+		if(groupSize == 0 || bot.byzantine == true){
+			bot.localGroupOpinion = bot.opinion;
+		}
+
+		else {
+			var numNotConsensus=0;
+			for (var i=0; i<groupSize; i++){
+				if (bot.localGroup[i].opinion == false) numNotConsensus++;
+			}
+			if((numNotConsensus)/i > 0.5) bot.localGroupOpinion = false;
+			else  bot.localGroupOpinion = true;
+		}
+		bot.localGroup = [];
 	}
 
 	function findLocalGroup(bot, numRobots, robotArr) {
@@ -360,11 +378,8 @@ function init(){
 		groupSize = bot.localGroup.length;
 
 		if (groupSize == 0 || bot.byzantine == true){
-			for (var i=0; i<numLocalOpinions; i++){
 				bot.localGroupOpinion = bot.opinion;
 			}
-		}
-
 		else {
 			var numRed=0;
 			for (var i=0; i<groupSize; i++){
@@ -406,19 +421,21 @@ function init(){
 		//worst case
 		if (groupSize == 0 || bot.byzantine == true){
 			for (var i=0; i<numLocalOpinions; i++){
-				bot.localGroupOpinion = (false, "Red");
+				bot.opinion = false;
 			}
 		}
 
 		else {
-			var numRed=0;
+			var numNotConsensus=0;
 			for (var i=0; i<groupSize; i++){
-				if (bot.localGroup[i].opinion == 'Red') numRed++;
+				if (bot.localGroup[i].byzantine == true && bot.localGroup[i].discovered == false) numNotConsensus++;
+				else if(result[0] == false) numNotConsensus++;
 			}
-			if((numRed)/i > 0.5) bot.localGroupOpinion = 'Red';
-			else  bot.localGroupOpinion = 'White';
+			if((numNotConsensus)/i > 0.5) bot.opinion = false;
+			else  bot.opinion = true;
 		}
 		bot.localGroup = [];
+		console.log("harvest bot ", bot.id, "  opinion is ", bot.opinion);
 
 	}
 
