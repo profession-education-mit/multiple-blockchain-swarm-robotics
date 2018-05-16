@@ -33,10 +33,6 @@ contract Voting {
     function votingRoundEnded() public {
         consensusReached();
         numRounds += 1;
-        for(uint8 i = 0; i < opinionList.length; i++) {
-            votesReceived[opinionList[i]] = 0;
-            totalVotes = 0;
-        }
 
         for(uint8 j = 0; j < 20; j++) {
             if (individualVotes[j] != maxOpinion) {
@@ -49,6 +45,11 @@ contract Voting {
                 }
             }
         }
+
+        for(uint8 i = 0; i < opinionList.length; i++) {
+            votesReceived[opinionList[i]] = 0;
+            totalVotes = 0;
+        }        
     }
 
     function seeBanned() view public returns (uint32[20], bool[20], uint64) {
@@ -96,8 +97,14 @@ contract Voting {
         }
     }
 
+    //resets all the variables that get carries between voting rounds
     function initialise() {
         numRounds = 0;
+        consensus  =false;
+        for(uint8 i = 0; i < 20; i++) {
+            bannedRobots[i] = false;
+            byzantineCount[i] = 0;
+        }
     }
 
     function validOpinion(bytes32 opinion) view public returns (bool) {

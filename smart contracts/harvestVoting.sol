@@ -6,10 +6,10 @@ contract Voting {
     The key of the mapping is candidate name stored as type bytes32 and value is
     an unsigned integer to store the vote count
     */
-    event onVote(bytes32 opinion, address sender);
-    event onVotingEnded(bool consensus, bytes32 opinion);
+    event onVote(bool opinion, address sender);
+    event onVotingEnded(bool consensus, bool opinion);
 
-    mapping (bytes32 => uint64) public votesReceived;
+    mapping (bool => uint64) public votesReceived;
 
     bool[] public opinionList;
     bool[10] public individualVotes;
@@ -95,5 +95,11 @@ contract Voting {
 
     function initialise() {
         numRounds = 0;
+        consensus  =false;
+        for(uint8 i = 0; i < 10; i++) {
+            bannedRobots[i] = false;
+            byzantineCount[i] = 0;
+        }
+
     }
 }
