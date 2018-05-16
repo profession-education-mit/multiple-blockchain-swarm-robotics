@@ -10,7 +10,6 @@ contract Voting {
   event onVote(bytes32 opinion, address sender);
   event onVotingEnded(bool consensus, bytes32 opinion);
 
-
   mapping (bytes32 => uint64) public votesReceived;
   // mapping (bytes32 => bool) public consensus;
 
@@ -22,6 +21,7 @@ contract Voting {
   uint64 totalVotes;
   uint64 maxVotes;
   bytes32 maxOpinion;
+  bool consensus;
 
 
   /* This is the constructor which will be called once when you
@@ -40,7 +40,7 @@ contract Voting {
     }
   }
 
-  function countVotes() view public returns (bytes32, uint64) {
+  function countVotes() view public returns (bytes32, uint64, uint64) {
     maxVotes = 0;
     for(uint i = 0; i < opinionList.length; i++) {
       if (votesReceived[opinionList[i]] > maxVotes) {
@@ -48,16 +48,20 @@ contract Voting {
           maxOpinion = opinionList[i];
       } 
     }
-    return(maxOpinion, maxVotes); 
+    return(maxOpinion, maxVotes, totalVotes); 
   }
 
   function consensusReached() view public returns (bool, bytes32) {
+      countVotes();
       if (maxVotes == totalVotes) {
+        consensus = true;
         onVotingEnded(true, maxOpinion);
       }
       else {
+        consensus = false;
         onVotingEnded(false, maxOpinion);
       }
+    return(consensus, maxOpinion);
   }
 
   // This function returns the total votes a candidate has received so far

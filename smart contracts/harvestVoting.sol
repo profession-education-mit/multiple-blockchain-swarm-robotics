@@ -13,6 +13,10 @@ contract Voting {
   event onVote(bool opinion, address sender);
   event onVotingEnded(bool consensus, bool opinion);
 
+  string constant public poster = "aadfwefaaa";
+  string constant public message = "bbaeqfefbbb";
+
+
   mapping (bool => uint64) public votesReceived;
   
   /* Solidity doesn't let you pass in an array of strings in the constructor (yet).
@@ -29,14 +33,15 @@ contract Voting {
     opinionList = opinionNames;
   }
 
-  // This function returns the total votes a candidate has received so far
+  // This function returns the total votes an opinion has received so far
   function totalVotesFor(bool opinion) view public returns (uint64) {
     return votesReceived[opinion];
   }
 
-  // This function increments the vote count for the specified candidate. This
+  // This function increments the vote count for the specified opinion. This
   // is equivalent to casting a vote
-  function voteForOpinion(bool opinion) public {
+  function voteForOpinion(bool opinion, address sender) public {
     votesReceived[opinion] += 1;
+    onVote(opinion, sender);
   }
 }
