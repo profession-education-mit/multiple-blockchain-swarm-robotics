@@ -17,6 +17,7 @@ contract Voting {
     uint64 totalVotes;
     uint64 maxVotes;
     bytes32 maxOpinion;
+    bytes32 otherOpinion;    
     bool consensus;
     uint64 numRounds;
     uint32[20] public byzantineCount;
@@ -56,18 +57,22 @@ contract Voting {
         return(byzantineCount, bannedRobots, numRounds);
     }
 
-    function countVotes() view public returns (bytes32, uint64, uint64) {
+    function countVotes() view public returns (bytes32, bytes32, uint64, uint64, uint64, uint64) {
         maxVotes = 0;
-        for(uint i = 0; i < opinionList.length; i++) {
-            if (votesReceived[opinionList[i]] > maxVotes) {
-                maxVotes = votesReceived[opinionList[i]];
-                maxOpinion = opinionList[i];
-            }
+        if(votesReceived[opinionList[0]] > votesReceived[opinionList[1]]){
+            maxOpinion = opinionList[0];
+            otherOpinion = opinionList[1];
+            maxVotes = votesReceived[opinionList[0]];
         }
-        return(maxOpinion, maxVotes, totalVotes);
+        else{
+            maxOpinion = opinionList[1];
+            otherOpinion = opinionList[0];
+            maxVotes = votesReceived[opinionList[1]];
+        }
+        return(maxOpinion, otherOpinion, maxVotes, totalVotes, votesReceived[opinionList[0]], votesReceived[opinionList[1]]);
     }
 
-    function consensusReached() view public returns (bool, bytes32) {
+    function consensusReached() view public returns (bool, bytes32, bytes32, uint64) {
         countVotes();
         if (maxVotes == totalVotes) {
             consensus = true;
@@ -76,7 +81,7 @@ contract Voting {
             consensus = false;
             onVotingEnded(false, maxOpinion);
         }
-        return(consensus, maxOpinion);
+        return(consensus, maxOpinion, otherOpinion, maxVotes);
     }
 
     // This function returns the total votes a candidate has received so far

@@ -36,3 +36,6 @@
 20:15:36.344523 version@stat F·[3] S·1KiB[1KiB] Sc·[0.75]
 20:15:36.345471 db@janitor F·5 G·0
 20:15:36.345510 db@open done T·8.93031ms
+=============== May 16, 2018 (EDT) ===============
+18:51:22.468984 db@close closing
+18:51:22.471379 db@close done T·3.054252ms
