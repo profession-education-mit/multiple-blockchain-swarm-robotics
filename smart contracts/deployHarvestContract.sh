@@ -8,7 +8,7 @@ compiledCode = solc.compile(code)
 abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
 harvestVotingContract = web3Chain2.eth.contract(abiDefinition)
 byteCode = compiledCode.contracts[':Voting'].bytecode
-deployedContract = harvestVotingContract.new(['Consensus', 'No consensus'],{data: byteCode, from: web3Chain2.eth.accounts[0], gas: 4700000})
+deployedContract = harvestVotingContract.new(['true', 'false'],{data: byteCode, from: web3Chain2.eth.accounts[0], gas: 4700000})
 deployedContract.address
 contractInstance = harvestVotingContract.at(deployedContract.address)
 compiledCode.contracts[':Voting'].interface

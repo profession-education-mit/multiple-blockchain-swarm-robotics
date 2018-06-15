@@ -6,17 +6,18 @@ contract Voting {
     The key of the mapping is candidate name stored as type bytes32 and value is
     an unsigned integer to store the vote count
     */
-    event onVote(bool opinion, address sender);
-    event onVotingEnded(bool consensus, bool opinion);
+    event onVote(bytes32 opinion, address sender);
+    event onVotingEnded(bool consensus, bytes32 opinion);
 
-    mapping (bool => uint64) public votesReceived;
+    mapping (bytes32 => uint64) public votesReceived;
 
-    bool[] public opinionList;
-    bool[10] public individualVotes;
+    bytes32[] public opinionList;
+    bytes32[10] public individualVotes;
     bool[10] public bannedRobots;
     uint64 totalVotes;
     uint64 maxVotes;
-    bool maxOpinion;
+    bytes32 maxOpinion;
+    bytes32 otherOpinion;
     bool consensus;
     uint64 numRounds;
     uint32[10] public byzantineCount;
@@ -25,7 +26,7 @@ contract Voting {
     deploy the contract to the blockchain. When we deploy the contract,
     we will pass an array of candidates who will be contesting in the election
     */
-    function Voting(bool[] opinionNames) public {
+    function Voting(bytes32[] opinionNames) public {
         opinionList = opinionNames;
     }
 
@@ -42,7 +43,7 @@ contract Voting {
                 byzantineCount[j] += 1;
             }
 
-            if (numRounds > 4){
+            if (numRounds > 6){
                 if (byzantineCount[j] > numRounds/2) {
                     bannedRobots[j] = true;
                 }
@@ -54,18 +55,22 @@ contract Voting {
         return(byzantineCount, bannedRobots, numRounds);
     }
 
-    function countVotes() view public returns (bool, uint64, uint64) {
+    function countVotes() view public returns (bytes32, bytes32, uint64) {
         maxVotes = 0;
-        for(uint i = 0; i < opinionList.length; i++) {
-            if (votesReceived[opinionList[i]] > maxVotes) {
-                maxVotes = votesReceived[opinionList[i]];
-                maxOpinion = opinionList[i];
-            }
+        if(votesReceived[opinionList[0]] > votesReceived[opinionList[1]]){
+            maxOpinion = opinionList[0];
+            otherOpinion = opinionList[1];
+            maxVotes = votesReceived[opinionList[0]];
         }
-        return(maxOpinion, maxVotes, totalVotes);
+        else{
+            maxOpinion = opinionList[1];
+            otherOpinion = opinionList[0];
+            maxVotes = votesReceived[opinionList[1]];
+        }
+        return(maxOpinion, otherOpinion, maxVotes);
     }
 
-    function consensusReached() view public returns (bool, bool) {
+    function consensusReached() view public returns (bool, bytes32) {
         countVotes();
         if (maxVotes == totalVotes) {
             consensus = true;
@@ -78,13 +83,14 @@ contract Voting {
     }
 
     // This function returns the total votes a candidate has received so far
-    function totalVotesFor(bool opinion) view public returns (uint64) {
+    function totalVotesFor(bytes32 opinion) view public returns (uint64) {
         return votesReceived[opinion];
     }
 
     // This function increments the vote count for the specified candidate. This
     // is equivalent to casting a vote
-    function voteForOpinion(bool opinion, uint8 sender) public {
+    function voteForOpinion(bytes32 opinion, uint8 sender) public {
+        //require(validOpinion(opinion));
         onVote(opinion, sender);
         if (!bannedRobots[sender]) {
             votesReceived[opinion] += 1;
@@ -95,11 +101,21 @@ contract Voting {
 
     function initialise() {
         numRounds = 0;
-        consensus  =false;
+        consensus  = false;
         for(uint8 i = 0; i < 10; i++) {
             bannedRobots[i] = false;
             byzantineCount[i] = 0;
         }
 
+    }
+
+
+    function validOpinion(bytes32 opinion) view public returns (bool) {
+        for(uint i = 0; i < opinionList.length; i++) {
+            if (opinionList[i] == opinion) {
+                return true;
+            }
+        }
+        return false;
     }
 }

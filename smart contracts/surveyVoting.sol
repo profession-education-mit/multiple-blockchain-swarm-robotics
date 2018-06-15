@@ -57,7 +57,7 @@ contract Voting {
         return(byzantineCount, bannedRobots, numRounds);
     }
 
-    function countVotes() view public returns (bytes32, bytes32, uint64, uint64, uint64, uint64) {
+    function countVotes() view public returns (bytes32, bytes32, uint64) {
         maxVotes = 0;
         if(votesReceived[opinionList[0]] > votesReceived[opinionList[1]]){
             maxOpinion = opinionList[0];
@@ -69,10 +69,10 @@ contract Voting {
             otherOpinion = opinionList[0];
             maxVotes = votesReceived[opinionList[1]];
         }
-        return(maxOpinion, otherOpinion, maxVotes, totalVotes, votesReceived[opinionList[0]], votesReceived[opinionList[1]]);
+        return(maxOpinion, otherOpinion, maxVotes);
     }
 
-    function consensusReached() view public returns (bool, bytes32, bytes32, uint64) {
+    function consensusReached() view public returns (bool, bytes32) {
         countVotes();
         if (maxVotes == totalVotes) {
             consensus = true;
@@ -81,7 +81,7 @@ contract Voting {
             consensus = false;
             onVotingEnded(false, maxOpinion);
         }
-        return(consensus, maxOpinion, otherOpinion, maxVotes);
+        return(consensus, maxOpinion);
     }
 
     // This function returns the total votes a candidate has received so far
